@@ -1,0 +1,13 @@
+micronaut:
+  application:
+    name: mn-authentication
+  server:
+    port: 8081
+  http:
+    client:
+      read-timeout: 10s
+      connect-timeout: 10s
+    services:
+      idp-client:
+        urls:
+          - http://127.0.0.1:8080
