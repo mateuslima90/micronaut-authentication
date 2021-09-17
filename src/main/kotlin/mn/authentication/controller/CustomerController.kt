@@ -5,6 +5,7 @@ import io.micronaut.http.annotation.Controller
 import io.micronaut.http.annotation.Post
 import io.micronaut.http.annotation.Status
 import mn.authentication.model.Customer
+import mn.authentication.model.CustomerAuthRequest
 import mn.authentication.model.IdentityProviderResponse
 import mn.authentication.service.CustomerService
 import reactor.core.publisher.Mono
@@ -23,6 +24,10 @@ class CustomerController(val customerService: CustomerService) {
         return customerService.authenticate()
     }
 
+    @Post("/customer/authenticate")
+    fun customerAuthenticate(customerAuthRequest: CustomerAuthRequest) : Mono<IdentityProviderResponse> {
+        return customerService.customerAuthenticate(customerAuthRequest)
+    }
 
     @Status(HttpStatus.NO_CONTENT)
     @Post("/signup2")

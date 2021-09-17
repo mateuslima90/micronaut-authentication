@@ -33,3 +33,10 @@ data class IdpUser(val username: String? = null,
                    val credentials: List<Credential>)
 
 data class CustomerResponse(val msg: String)
+
+
+data class CustomerAuthRequest(val username: String? = null,
+                               val password: String? = null,
+                               val grant_type: String? = null,
+                               val client_id: String? = null,
+                               val client_secret: String? = null)

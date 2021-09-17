@@ -17,6 +17,9 @@ interface IdentityProviderClient {
     @Produces(MediaType.APPLICATION_FORM_URLENCODED)
     fun authenticate(@Body identityProvider: IdentityProvider) : Mono<IdentityProviderResponse>
 
+    @Post("/auth/realms/customer/protocol/openid-connect/token")
+    @Produces(MediaType.APPLICATION_FORM_URLENCODED)
+    fun customerAuthenticate(@Body customerAuthRequest: CustomerAuthRequest) : Mono<IdentityProviderResponse>
 
     //@Status(HttpStatus.NO_CONTENT)
     @Post("/auth/admin/realms/customer/users")

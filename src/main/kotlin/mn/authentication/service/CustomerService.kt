@@ -1,5 +1,8 @@
 package mn.authentication.service
 
+import io.micronaut.http.annotation.Error
+import io.micronaut.http.client.exceptions.HttpClientResponseException
+import io.micronaut.http.hateoas.JsonError
 import mn.authentication.client.IdentityProviderClient
 import mn.authentication.client.IdentityProviderLowerClient
 import mn.authentication.exception.CustomerException
@@ -21,7 +24,7 @@ class CustomerService(val identityProviderLowerClient: IdentityProviderLowerClie
 //    }
 
     fun authenticate(): Mono<IdentityProviderResponse> {
-        return idpClient.authenticate(IdentityProvider("admin", "admin", "password", "admin-cli"))
+        return idpClient.authenticate(IdentityProvider("admin", "admin1", "password", "admin-cli"))
     }
 
     fun signup2(customer: Customer) : Mono<Void> {
@@ -36,6 +39,16 @@ class CustomerService(val identityProviderLowerClient: IdentityProviderLowerClie
         val credentials : List<Credential> = listOf(Credential("password", customer.password))
 
         return IdpUser(customer.username, customer.email, true, credentials)
+    }
+
+    @Error
+    fun customerAuthenticate(customerAuthRequest: CustomerAuthRequest): Mono<IdentityProviderResponse> {
+        return idpClient.customerAuthenticate(customerAuthRequest)
+                .doOnError { t -> print(
+                        (t as HttpClientResponseException).response.getBody(JsonError::class.java))
+                }
+                //.on { t -> Mono.error(t as HttpClientResponseException) }
+
     }
 
 }
